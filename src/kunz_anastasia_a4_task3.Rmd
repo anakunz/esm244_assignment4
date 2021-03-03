@@ -1,0 +1,35 @@
+---
+title: "Bootstrapped Confidence Interval for Proportions"
+author: "Anastasia Kunz"
+date: "3/2/2021"
+output:
+  html_document:
+    code_folding: hide
+  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(here)
+library(boot)
+library(gt)
+library(broom)
+```
+
+## Exclusionary Conduct Bootstrapped Analysis
+
+```{r}
+data <- c()
+```
+
+
+
+
+
+
+
+
+### Data Citation
+
+UCSB Campus Climate Project Final Report 2014. Prepared by Rankin & Associates Consulting, available at http://campusclimate.ucop.edu/_common/files/pdf-climate/ucsb-full-report.pdf
