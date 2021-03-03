@@ -2,11 +2,13 @@
 title: "Wild Fish Catch"
 author: "Anastasia Kunz"
 date: "3/2/2021"
-output: html_document
+output:
+  html_document:
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 library(tidyverse)
 library(here)
 library(janitor)
@@ -17,6 +19,8 @@ library(lubridate)
 
 
 ## Wild Fish Catch Analysis
+
+Breif blurb about wild fish catch.
 
 ```{r}
 fish_catch <- read_csv(here("data", "fish_catch.csv"), skip = 4) %>% 
@@ -43,11 +47,41 @@ ggplot(fish_catch, aes(x = year, y = wild_catch))+
   )
 ```
 
-Can see a general increasing trend through time, which levels off around 1990. This trend looks roughly like logistic growth.
-  - Need to include an equation
-  - and estimations for parameters
-  
+Can see a general increasing trend through time, which looks roughly like logistic growth.
 
+Therefore, we will use $P(t)=\frac{K}{1+Ae^{-kt}}$  and estimate our parameters based off of the graph above.
+
+**K Estimate**
+
+Wild fish catch levels off around 1990, at about 90 to 95 million tons of wild fish catch per year. *So the estimate for K will be 95 million tons.*
+
+
+**k Estimate**
+
+We can estimate *k* by looking at the log of wild fish catch pre 1990 to find the growth rate. *Here we estimate it as 0.036.*
+
+```{r}
+fish_exp <- fish_catch %>% 
+  filter(year < 1985) %>% 
+  mutate(ln_fish = log(wild_catch))
+
+lm_fish <- lm(ln_fish ~ year, data = fish_exp)
+
+```
+
+
+**A Estimate**
+Based on our equation where $A$ = $\frac{K-P_0}{P_0}$ we can estimate A to be $\frac{95 - 5}{5}$ = *about 18.*
+
+
+
+```{r}
+#df_nls <- nls(pop ~ K/(1 + A*exp(-r*time)),
+   #           data = df,
+   #           start = list(K = 180, A = 17, r = 0.17),
+   #           trace = TRUE
+   #           )
+```
 
 
 
