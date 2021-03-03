@@ -32,14 +32,22 @@ fish_catch <- read_csv(here("data", "fish_catch.csv"), skip = 4) %>%
 
 ```{r}
 # make time series of fish catch
-fish_catch_ts <- fish_catch %>% 
- mutate(date = tsibble::year(year))
-  #  as_tsibble(key = NULL, index = date)
-
 ggplot(fish_catch, aes(x = year, y = wild_catch))+
   geom_line()+
-  theme_minimal()
+  theme_minimal()+
+  labs(
+    x = "Year",
+    y = "Fish Catch (Million Tons)",
+    title = "Global Wild Fish Catch",
+    subtitle = "1950 - 2012"
+  )
 ```
+
+Can see a general increasing trend through time, which levels off around 1990. This trend looks roughly like logistic growth.
+  - Need to include an equation
+  - and estimations for parameters
+  
+
 
 
 
