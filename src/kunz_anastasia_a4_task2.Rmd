@@ -1,0 +1,49 @@
+---
+title: "Wild Fish Catch"
+author: "Anastasia Kunz"
+date: "3/2/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(here)
+library(janitor)
+library(nlstools)
+library(tsibble)
+library(lubridate)
+```
+
+
+## Wild Fish Catch Analysis
+
+```{r}
+fish_catch <- read_csv(here("data", "fish_catch.csv"), skip = 4) %>% 
+  select(X1, X2) %>% 
+  rename(year = X1,
+         wild_catch = X2) %>% 
+  head(-4) %>% 
+  mutate(year = as.numeric(year))
+
+```
+
+### Data Exploration: Wild Fish Catch Time Series
+
+```{r}
+# make time series of fish catch
+fish_catch_ts <- fish_catch %>% 
+ mutate(date = tsibble::year(year))
+  #  as_tsibble(key = NULL, index = date)
+
+ggplot(fish_catch, aes(x = year, y = wild_catch))+
+  geom_line()+
+  theme_minimal()
+```
+
+
+
+
+
+### Data Citation 
+Global wild fish catch and aquaculture production, compiled by Earth Policy Institute with 1950-2010 from U.N. Food and Agriculture Organization (FAO), Global Capture Production and Global Aquaculture Production, electronic databases, at www.fao.org/fishery/topic/16140/en.
