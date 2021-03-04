@@ -1,9 +1,10 @@
 ---
-title: "Bootstrapped Confidence Interval for Proportions"
+title: "Exclusionary Experience Analysis using Bootstrapping"
 author: "Anastasia Kunz"
 date: "3/2/2021"
 output:
   html_document:
+    theme: flatly
     code_folding: hide
   
 ---
@@ -20,12 +21,67 @@ library(broom)
 ## Exclusionary Conduct Bootstrapped Analysis
 
 ```{r}
-data <- c()
+# create vector of "yes" reported exclusionary experiences (1) or "no" did not report exclusionary experiences (0)
+excluded <- c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+
+# create function to calculate proportion: need to add all up and divide by 36, then multiply by 100
+proportion_fun <- function (x,i) {sum(x[i])/36}
+
+# bootstrap 100,000
+boot_100k <- boot(excluded,
+                 statistic = proportion_fun,
+                 R = 100000)
+tidy_boot <- broom::tidy(boot_100k)
+
+# create data frame
+exclude_100k <- data.frame(prop = boot_100k$t)
+
+# plot
+ggplot(data = exclude_100k, aes(x = prop))+
+  geom_histogram()+
+  theme_classic()+
+  labs(
+    x = "Proportion",
+    y = "Count",
+    title = "Exclusionary Experiences Among Nonbinary or Genderqueer Students"
+  )
+
 ```
 
+```{r}
+# get confidence interval
+confidence <-boot.ci(boot_100k, conf = 0.95)
+```
 
+According to this analysis 61.1% (n = 36) of genderqueer students reported exclusionary experiences, with a bootstrapped confidence interval of [44.44, 77.78], bias of -0.00037 and a standard error of 8.109 (n = 100,000 bootstrap samples).
 
-
+```{r}
+tidy_boot %>% 
+  gt() %>% 
+  fmt_percent(
+    columns = vars(statistic),
+    decimals = 1
+  ) %>% 
+  fmt_number(
+    columns = vars(bias),
+    decimals = 5
+  ) %>% 
+  fmt_number(
+    columns = vars(std.error),
+    decimals = 3
+  ) %>% 
+  tab_options(
+    table.width = pct(60)
+  ) %>% 
+  tab_header(
+    title = "Bootstrap Results"
+  ) %>% 
+  cols_label(
+    statistic = "Statistic",
+    bias = "Bias",
+    std.error = "Standard Error"
+  )
+```
 
 
 
