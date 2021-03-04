@@ -51,16 +51,22 @@ ggplot(data = exclude_100k, aes(x = prop))+
 ```{r}
 # get confidence interval
 confidence <-boot.ci(boot_100k, conf = 0.95)
+
+#want to know the mean of the bootstrapped proportions
+tidy_boot_avg <- tidy_boot %>%
+  mutate(mean = mean(boot_100k$t))
+  
+
 ```
 
-According to this analysis 61.1% (n = 36) of genderqueer students reported exclusionary experiences, with a bootstrapped confidence interval of [44.44, 77.78], bias of -0.00037 and a standard error of 8.109 (n = 100,000 bootstrap samples).
+According to this analysis using bootstrapping, an average of `r round(tidy_boot_avg[4]*100, 2)`% (n = 36, n = 100,000 bootstrap samples) of genderqueer students reported exclusionary experiences, with a confidence interval of [44.44, 77.78]. The bootstrapped results had a bias of `r round(tidy_boot_avg[2],5)` and a standard error of `r round(tidy_boot_avg[3], 3)`.
 
 ```{r}
-tidy_boot %>% 
+tidy_boot_avg %>% 
   gt() %>% 
   fmt_percent(
-    columns = vars(statistic),
-    decimals = 1
+    columns = vars(statistic, mean),
+    decimals = 2
   ) %>% 
   fmt_number(
     columns = vars(bias),
@@ -79,7 +85,8 @@ tidy_boot %>%
   cols_label(
     statistic = "Statistic",
     bias = "Bias",
-    std.error = "Standard Error"
+    std.error = "Standard Error",
+    mean = "Bootstrap Average"
   )
 ```
 
