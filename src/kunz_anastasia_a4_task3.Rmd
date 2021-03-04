@@ -59,7 +59,7 @@ tidy_boot_avg <- tidy_boot %>%
 
 ```
 
-According to this analysis using bootstrapping, an average of `r round(tidy_boot_avg[4]*100, 2)`% (n = 36, n = 100,000 bootstrap samples) of genderqueer students reported exclusionary experiences, with a confidence interval of [44.44, 77.78]. The bootstrapped results had a bias of `r tidy_boot_avg[2]` and a standard error of `r round(tidy_boot_avg[3], 3)`.
+According to this analysis using bootstrapping, an average of `r round(tidy_boot_avg[4]*100, 2)`% (n = 36, n = 100,000 bootstrap samples) of genderqueer students reported exclusionary experiences, with a confidence interval of [44.44, 77.78]. The bootstrapped results had a bias of `r format(as.character(round(tidy_boot_avg[2],4)), scientific = TRUE)` and a standard error of `r round(tidy_boot_avg[3], 3)`.
 
 ```{r}
 tidy_boot_avg %>% 
