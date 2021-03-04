@@ -4,6 +4,7 @@ author: "Anastasia Kunz"
 date: "3/2/2021"
 output:
   html_document:
+    theme: flatly
     code_folding: hide
 ---
 
@@ -67,7 +68,7 @@ hclust_complete <- hclust(euclid_dist, method = "complete")
 
 #### Dendrogram of Stream Site Cluster Analysis
 
-```{r, fig.cap= "**Figure 1.** Hierarchical cluster analysis by complete linkage of nine stream sites in Santa Barbara coastal drainage."}
+```{r, fig.cap= "**Figure 1.** Hierarchical cluster of stream chemistry using complete linkage for nine stream sites in the Santa Barbara coastal drainage."}
 ggdendrogram(hclust_complete) +
   theme_minimal() +
   labs(x = "Stream Site Code",
